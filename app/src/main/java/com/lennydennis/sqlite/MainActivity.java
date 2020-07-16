@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.lennydennis.sqlite.Database.DatabaseOpenHelper;
+import com.lennydennis.sqlite.Model.Customer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +33,18 @@ public class MainActivity extends AppCompatActivity {
         btnAddCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Customer customer;
+                try {
+                    customer = new Customer(1,customerName.getText().toString(),Integer.parseInt(customerAge.getText().toString()),activeCustomer.isChecked());
+                }catch (Exception e){
+                    customer = new Customer(1,"error",0,false);
+                }
 
+                DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(MainActivity.this);
+
+                boolean success = databaseOpenHelper.addOne(customer);
+
+                Toast.makeText(MainActivity.this, "Success ="+success, Toast.LENGTH_SHORT).show();
             }
         });
 

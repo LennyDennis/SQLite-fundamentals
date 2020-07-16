@@ -3,13 +3,13 @@ package com.lennydennis.sqlite.Model;
 public class Customer {
     private int id;
     private String customerName;
-    private String customerAge;
+    private Integer customerAge;
     private Boolean isActive;
 
     public Customer() {
     }
 
-    public Customer(int id, String customerName, String customerAge, Boolean isActive) {
+    public Customer(int id, String customerName, Integer customerAge, Boolean isActive) {
         this.id = id;
         this.customerName = customerName;
         this.customerAge = customerAge;
@@ -42,11 +42,11 @@ public class Customer {
         this.customerName = customerName;
     }
 
-    public String getCustomerAge() {
+    public Integer getCustomerAge() {
         return customerAge;
     }
 
-    public void setCustomerAge(String customerAge) {
+    public void setCustomerAge(Integer customerAge) {
         this.customerAge = customerAge;
     }
 
