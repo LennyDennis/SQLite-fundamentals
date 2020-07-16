@@ -2,12 +2,16 @@ package com.lennydennis.sqlite.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 import com.lennydennis.sqlite.Model.Customer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
@@ -41,7 +45,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addOne(Customer customer){
+    public boolean addCustomer(Customer customer){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_CUSTOMER_NAME,customer.getCustomerName());
@@ -54,5 +58,28 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         }else{
             return true;
         }
+    }
+
+    public List<Customer> getCustomer(){
+        List<Customer> customerList = new ArrayList<>();
+        String getCustomersQuery = "SELECT * FROM "+CUSTOMER_TABLE;
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(getCustomersQuery,null);
+        if(cursor.moveToFirst()){
+            do{
+                int customerID = cursor.getInt(0);
+                String customerName = cursor.getString(1);
+                int customerAge = cursor.getInt(2);
+                boolean customerActive = cursor.getInt(3) == 1;
+
+                Customer customer = new Customer(customerID,customerName,customerAge,customerActive);
+                customerList.add(customer);
+            }while (cursor.moveToNext());
+        }else{
+
+        }
+        cursor.close();
+        database.close();
+        return customerList;
     }
 }

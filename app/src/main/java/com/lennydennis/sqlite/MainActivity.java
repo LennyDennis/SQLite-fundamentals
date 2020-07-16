@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lennydennis.sqlite.Database.DatabaseOpenHelper;
 import com.lennydennis.sqlite.Model.Customer;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.active_customer) Switch activeCustomer;
     @BindView(R.id.btn_add) Button btnAddCustomer;
     @BindView(R.id.btn_viewall) Button btnViewCustomers;
+    private DatabaseOpenHelper mDatabaseOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
                     customer = new Customer(1,"error",0,false);
                 }
 
-                DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(MainActivity.this);
+                mDatabaseOpenHelper = new DatabaseOpenHelper(MainActivity.this);
 
-                boolean success = databaseOpenHelper.addOne(customer);
+                boolean success = mDatabaseOpenHelper.addCustomer(customer);
 
                 Toast.makeText(MainActivity.this, "Success ="+success, Toast.LENGTH_SHORT).show();
             }
@@ -51,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
         btnViewCustomers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mDatabaseOpenHelper = new DatabaseOpenHelper(MainActivity.this);
+                List<Customer> customerList = mDatabaseOpenHelper.getCustomer();
 
+                Toast.makeText(MainActivity.this, customerList.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
