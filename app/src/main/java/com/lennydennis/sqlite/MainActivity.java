@@ -19,10 +19,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.active_customer) Switch activeCustomer;
     @BindView(R.id.btn_add) Button btnAddCustomer;
     @BindView(R.id.btn_viewall) Button btnViewCustomers;
-    @BindView(R.id.display_name) TextView displayName;
-    @BindView(R.id.display_id) TextView displayId;
-    @BindView(R.id.display_age) TextView displayAge;
-    @BindView(R.id.display_active) TextView displayActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
