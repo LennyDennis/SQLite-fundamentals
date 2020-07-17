@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.lennydennis.sqlite.Database.DatabaseContract.*;
 
 import androidx.annotation.Nullable;
 
@@ -17,11 +18,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "customer.db";
     private static final int DATABASE_VERSION = 1;
-    public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
-    public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
-    public static final String COLUMN_CUSTOMER_AGE = "CUSTOMER_AGE";
-    public static final String COLUMN_ID = "ID";
-    public static final String COLUMN_ACTIVE = "ACTIVE";
+
 
     public DatabaseOpenHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,15 +26,13 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        String createCustomerTable = "CREATE TABLE " + CUSTOMER_TABLE + " (" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COLUMN_CUSTOMER_NAME + " TEXT," +
-                COLUMN_CUSTOMER_AGE + " INTEGER," +
-                COLUMN_ACTIVE + " BOOL )";
+        String createCustomerTable = "CREATE TABLE " + CustomerEntry.CUSTOMER_TABLE + " (" +
+                CustomerEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                CustomerEntry.COLUMN_CUSTOMER_NAME + " TEXT," +
+                CustomerEntry.COLUMN_CUSTOMER_AGE + " INTEGER," +
+                CustomerEntry.COLUMN_ACTIVE + " BOOL )";
 
         db.execSQL(createCustomerTable);
-
     }
 
     @Override
@@ -48,11 +43,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public boolean addCustomer(Customer customer){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_CUSTOMER_NAME,customer.getCustomerName());
-        contentValues.put(COLUMN_CUSTOMER_AGE,customer.getCustomerAge());
-        contentValues.put(COLUMN_ACTIVE,customer.getActive());
+        contentValues.put(CustomerEntry.COLUMN_CUSTOMER_NAME,customer.getCustomerName());
+        contentValues.put(CustomerEntry.COLUMN_CUSTOMER_AGE,customer.getCustomerAge());
+        contentValues.put(CustomerEntry.COLUMN_ACTIVE,customer.getActive());
 
-        long insert = database.insert(CUSTOMER_TABLE, null, contentValues);
+        long insert = database.insert(CustomerEntry.CUSTOMER_TABLE, null, contentValues);
         if(insert == -1){
             return false;
         }else{
@@ -62,7 +57,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public List<Customer> getCustomer(){
         List<Customer> customerList = new ArrayList<>();
-        String getCustomersQuery = "SELECT * FROM "+CUSTOMER_TABLE;
+        String getCustomersQuery = "SELECT * FROM "+CustomerEntry.CUSTOMER_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(getCustomersQuery,null);
         if(cursor.moveToFirst()){
