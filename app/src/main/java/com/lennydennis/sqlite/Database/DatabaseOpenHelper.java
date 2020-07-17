@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
 import com.lennydennis.sqlite.Database.DatabaseContract.*;
 
 import androidx.annotation.Nullable;
 
+import com.lennydennis.sqlite.MainActivity;
 import com.lennydennis.sqlite.Model.Customer;
 
 import java.util.ArrayList;
@@ -76,5 +79,33 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return customerList;
+    }
+
+//    public  boolean deleteCustomers(int id){
+//        SQLiteDatabase database = this.getWritableDatabase();
+//        String deleteQuery = "DELETE FROM " +
+//                CustomerEntry.CUSTOMER_TABLE + " WHERE " +
+//                CustomerEntry.COLUMN_ID + " = " + id ;
+//
+//        Cursor cursor = database.rawQuery(deleteQuery, null);
+//        if(cursor.moveToNext()){
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
+
+    public  boolean deleteCustomers(Customer customer){
+        SQLiteDatabase database = this.getWritableDatabase();
+        String deleteQuery = "DELETE FROM " +
+                CustomerEntry.CUSTOMER_TABLE + " WHERE " +
+                CustomerEntry.COLUMN_ID + " = " + customer.getId() ;
+
+        Cursor cursor = database.rawQuery(deleteQuery, null);
+        if(cursor.moveToNext()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
